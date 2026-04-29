@@ -1,0 +1,9 @@
+node_modules/
+.tmp/
+dist/
+site/dist/
+site/.astro/
+site/node_modules/
+.env
+.env.local
+*.log

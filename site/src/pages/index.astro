@@ -1,0 +1,61 @@
+---
+import Base from "../layouts/Base.astro";
+import { getManifest } from "../lib/manifest";
+
+const manifest = getManifest();
+const apps = Object.entries(manifest.apps);
+---
+<Base title="Claude / Codex 桌面端国内镜像">
+  <section class="card">
+    <h2 style="margin-top:0">国内可访问的 Claude 与 Codex 桌面端镜像</h2>
+    <p>每天自动同步 Anthropic Claude 与 OpenAI Codex 的最新桌面端版本，附中文版本说明，无需登录、无需 VPN。</p>
+    {manifest.updated_at && (
+      <p class="meta">最近一次同步：{new Date(manifest.updated_at).toLocaleString("zh-CN", { hour12: false })}</p>
+    )}
+  </section>
+
+  <div class="grid">
+    {apps.map(([id, app]) => {
+      const latest = app.releases[0];
+      return (
+        <section class="card">
+          <h2 style="margin-top:0">
+            <a href={`/${id}/`}>{app.name}</a>
+          </h2>
+          {latest ? (
+            <>
+              <p>
+                <span class="badge">最新版 {latest.version}</span>
+                {latest.released_at && <span class="meta"> · {latest.released_at}</span>}
+              </p>
+              <div>
+                {latest.files.map((f) => (
+                  <a class="btn" href={f.url} download>{
+                    f.platform === "macos"
+                      ? f.arch === "arm64" ? "下载 macOS · Apple Silicon"
+                      : f.arch === "x64" ? "下载 macOS · Intel"
+                      : "下载 macOS"
+                      : "下载 Windows"
+                  }</a>
+                ))}
+                {id === "codex-desktop" && app.windows_redirect && (
+                  <a class="btn secondary" href={app.windows_redirect} target="_blank" rel="noopener">
+                    Windows 用户 → Microsoft Store
+                  </a>
+                )}
+              </div>
+              <p style="margin-top:1rem">
+                <a href={`/${id}/${latest.version}/`}>查看本版更新说明（中文）→</a>
+              </p>
+            </>
+          ) : (
+            <p class="meta">尚未抓取到任何版本，请等待首次同步完成。</p>
+          )}
+          <p class="meta">
+            官方下载页：<a href={app.official_download} target="_blank" rel="noopener">{app.official_download}</a>
+          </p>
+        </section>
+      );
+    })}
+  </div>
+</Base>

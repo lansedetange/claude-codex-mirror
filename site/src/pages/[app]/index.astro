@@ -1,0 +1,49 @@
+---
+import Base from "../../layouts/Base.astro";
+import { appIds, getApp } from "../../lib/manifest";
+
+export function getStaticPaths() {
+  return appIds().map((id) => ({ params: { app: id } }));
+}
+
+const { app: appId } = Astro.params;
+const app = getApp(appId!);
+if (!app) throw new Error(`Unknown app ${appId}`);
+
+// Group releases by year-month for archive view.
+const groups = new Map<string, typeof app.releases>();
+for (const r of app.releases) {
+  const ym = (r.released_at ?? r.fetched_at).slice(0, 7);
+  const arr = groups.get(ym) ?? [];
+  arr.push(r);
+  groups.set(ym, arr);
+}
+const sortedGroups = [...groups.entries()].sort((a, b) => b[0].localeCompare(a[0]));
+---
+<Base title={`${app.name} · 历史版本`}>
+  <section class="card">
+    <h2 style="margin-top:0">{app.name} · 历史版本归档</h2>
+    <p class="meta">
+      官方下载页：<a href={app.official_download} target="_blank" rel="noopener">{app.official_download}</a>
+    </p>
+  </section>
+
+  {sortedGroups.length === 0 && (
+    <section class="card"><p class="meta">暂无版本记录。</p></section>
+  )}
+
+  {sortedGroups.map(([ym, rels]) => (
+    <section class="card">
+      <h3 style="margin-top:0">{ym}</h3>
+      <ul>
+        {rels.map((r) => (
+          <li>
+            <a href={`/${appId}/${r.version}/`}>{r.version}</a>
+            {r.released_at && <span class="meta"> · 发布于 {r.released_at}</span>}
+            <span class="meta"> · {r.files.length} 个文件</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</Base>

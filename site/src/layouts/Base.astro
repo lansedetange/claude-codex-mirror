@@ -1,0 +1,115 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description = "Claude / Codex 桌面端国内镜像，每日同步最新版本与中文更新说明。" } = Astro.props;
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='52' font-size='52'%3E📦%3C/text%3E%3C/svg%3E" />
+    <style>
+      :root {
+        --fg: #0f172a;
+        --fg-muted: #475569;
+        --bg: #f8fafc;
+        --card: #ffffff;
+        --border: #e2e8f0;
+        --accent: #2563eb;
+        --code-bg: #f1f5f9;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --fg: #e2e8f0;
+          --fg-muted: #94a3b8;
+          --bg: #0f172a;
+          --card: #1e293b;
+          --border: #334155;
+          --accent: #60a5fa;
+          --code-bg: #0b1220;
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", system-ui, sans-serif;
+        color: var(--fg);
+        background: var(--bg);
+        line-height: 1.65;
+      }
+      a { color: var(--accent); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      header, footer {
+        max-width: 960px; margin: 0 auto; padding: 1.5rem 1.25rem;
+      }
+      header { display: flex; justify-content: space-between; align-items: center; }
+      header h1 { margin: 0; font-size: 1.15rem; font-weight: 600; }
+      header nav a { margin-left: 1rem; color: var(--fg-muted); }
+      main { max-width: 960px; margin: 0 auto; padding: 1rem 1.25rem 3rem; }
+      footer { color: var(--fg-muted); font-size: 0.85rem; border-top: 1px solid var(--border); }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.25rem;
+      }
+      .badge {
+        display: inline-block;
+        padding: 0.15rem 0.55rem;
+        background: var(--code-bg);
+        border-radius: 6px;
+        font-size: 0.8rem;
+        color: var(--fg-muted);
+      }
+      .btn {
+        display: inline-block;
+        padding: 0.55rem 1rem;
+        background: var(--accent);
+        color: #fff !important;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        margin: 0.25rem 0.35rem 0.25rem 0;
+      }
+      .btn.secondary {
+        background: transparent;
+        color: var(--accent) !important;
+        border: 1px solid var(--accent);
+      }
+      .meta { color: var(--fg-muted); font-size: 0.88rem; }
+      pre, code { font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace; }
+      pre {
+        background: var(--code-bg); padding: 1rem; border-radius: 8px; overflow-x: auto;
+      }
+      code { background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 4px; font-size: 0.9em; }
+      pre code { background: transparent; padding: 0; }
+      details summary { cursor: pointer; color: var(--fg-muted); }
+      h2 { font-size: 1.35rem; margin-top: 2rem; }
+      h3 { font-size: 1.1rem; margin-top: 1.5rem; }
+      ul { padding-left: 1.4rem; }
+      .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1><a href="/" style="color: var(--fg)">📦 Claude / Codex 镜像</a></h1>
+      <nav>
+        <a href="/claude-desktop/">Claude Desktop</a>
+        <a href="/codex-desktop/">Codex Desktop</a>
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer>
+      <p>本站镜像 <strong>未经修改</strong> 的官方安装包，仅为方便国内用户下载。所有商标归原厂所有。</p>
+      <p>每个安装包均提供 SHA-256 校验值与官方原始链接，可自行核验。如遇任何下架请求，本站将立即响应。</p>
+    </footer>
+  </body>
+</html>

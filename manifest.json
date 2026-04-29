@@ -1,0 +1,20 @@
+{
+  "$schema": "./scripts/manifest.schema.json",
+  "updated_at": null,
+  "apps": {
+    "claude-desktop": {
+      "name": "Claude Desktop",
+      "homepage": "https://claude.ai",
+      "official_download": "https://claude.ai/download",
+      "releases": []
+    },
+    "codex-desktop": {
+      "name": "Codex Desktop",
+      "homepage": "https://developers.openai.com/codex/app",
+      "official_download": "https://developers.openai.com/codex/app",
+      "windows_redirect": "https://apps.microsoft.com/detail/9plm9xgg6vks",
+      "releases": []
+    }
+  },
+  "translations": {}
+}
