@@ -1,4 +1,8 @@
 {
-  "extends": "astro/tsconfigs/strict",
-  "include": ["src/**/*", "astro.config.mjs"]
+	"extends": "astro/tsconfigs/strict",
+	"include": [
+		"src/**/*",
+		"astro.config.mjs",
+		"./worker-configuration.d.ts"
+	]
 }
